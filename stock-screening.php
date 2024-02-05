@@ -1,10 +1,10 @@
 <?php
-/*
+
 require(__DIR__. '/library/rakit/rakid/vendor/autoload.php');
 use Rakit\Validation\Validator;
 require(__DIR__. '/library/vendor/autoload.php');
 use eftec\bladeone\BladeOne;
-
+/*
 require_once(dirname(__DIR__). '/stock-screening/models/model.php');
 require_once(dirname(__DIR__). '/stock-screening/models/Shop.php');
 require_once(dirname(__DIR__). '/stock-screening/models/Applicant.php');
@@ -15,13 +15,10 @@ require_once(dirname(__DIR__). '/stock-screening/models/ScheduleRepeat.php');
 require_once(dirname(__DIR__). '/stock-screening/models/RepeatExclude.php');
 require_once(dirname(__DIR__). '/stock-screening/models/Stock.php');
 require_once(dirname(__DIR__). '/stock-screening/models/StockTransfer.php');
-
-require_once(dirname(__DIR__). '/stock-screening/controllers/CustomerController.php');
-require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
-require_once(dirname(__DIR__). '/stock-screening/controllers/SalesController.php');
-require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
-require_once(dirname(__DIR__). '/stock-screening/controllers/StockController.php');
  */
+
+//require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
+require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
 
 //require(__DIR__. '/library/vendor/vendor_phpspreadsheet/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -100,8 +97,8 @@ class StockScreening {
 	 **/
 	function menu_top() {
 		echo 'stock screening git';
-//		$m = new MenuController();
-//		$m->listAction();
+		$m = new MenuController();
+		$m->listAction();
 	}
 
 	/**
