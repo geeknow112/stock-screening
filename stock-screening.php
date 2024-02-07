@@ -282,4 +282,24 @@ function custom_admin_footer() {
 }
 add_filter('admin_footer_text', 'custom_admin_footer');
 
+/**
+ * ショートコード作成
+ **/
+function set_shortcode(){
+	$test = 'stock screening git';
+	$m = new MenuController();
+	$rows = $m->testSC();
+//	return $rows[0]['max_date'];
+
+	$test_array = array('1', '10', '100', '1000');
+//	return implode(',', $test_array);
+
+	foreach ($test_array as $i => $d) {
+		$ret .= $d. '<br>';
+	}
+	return $ret;
+
+}
+add_shortcode('test1','set_shortcode');
+
 $StockScreening = new StockScreening;
