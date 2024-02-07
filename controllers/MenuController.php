@@ -43,7 +43,7 @@ if ($mysqli->connect_error) {
 	exit;
 }
 
-$sql = "select * from s4042 limit 10;";
+$sql = "select max(date) as max_date from s4042 limit 10;";
 
 //SQL文を実行する
 $data_set = $mysqli->query($sql);
@@ -75,6 +75,36 @@ var_dump($rows);
 	 **/
 	public function detailAction() {
 		echo $this->get_blade()->run("customer-detail");
+	}
+
+	public function testSC() {
+		//wpログイン情報関連を取得
+		$wp_user_info = wp_get_current_user();
+		//echo $user -> user_login; //ログインIDを取得
+		$user_login = $wp_user_info->user_login;
+
+		//DBコネクタを生成
+		$host = 'localhost';
+		$username = 'root';
+		$password = 'aErQl0cbmYmO';
+		$dbname = 'stocks';
+
+		$mysqli = new mysqli($host, $username, $password, $dbname);
+		if ($mysqli->connect_error) {
+			error_log($mysqli->connect_error);
+			exit;
+		}
+
+		$sql = "select max(date) as max_date from s4042 limit 10;";
+
+		//SQL文を実行する
+		$data_set = $mysqli->query($sql);
+		//扱いやすい形に変える
+		$result = [];
+		while($row = $data_set->fetch_assoc()){
+			$rows[] = $row;
+		}
+		return $rows;
 	}
 }
 ?>
