@@ -295,7 +295,7 @@ function set_shortcode(){
 //	return implode(',', $test_array);
 
 	foreach ($test_array as $i => $d) {
-		$ret .= $d. '<br>';
+		$ret .= '<div style="color: red;">'. $d. '</div>';
 	}
 	return $ret;
 
