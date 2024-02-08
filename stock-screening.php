@@ -294,8 +294,48 @@ function set_shortcode(){
 	$test_array = array('1', '10', '100', '1000');
 //	return implode(',', $test_array);
 
+	$ret .= '<div>';
+	$ret .= 'file名: <input type="text" class="input_text" id="file_md" value="" />';
+	$ret .= 'title:  <input type="text" class="input_text" id="file_title" value="" />';
+	$ret .= '<input type="submit" id="btn_set_memo" onclick="set_memo();" value="送信" />';
+	$ret .= '<textarea id="export_area"></textarea>';
+	$ret .= '<input type="submit" id="copy" onclick="copy_clipboard(\'export_area\');" value="copy" />';
+
+	$ret .= '<textarea id="export_cmd"></textarea>';
+	$ret .= '<input type="submit" id="copy_cmd" onclick="copy_clipboard(\'export_cmd\');" value="copy_cmd" />';
+	$ret .= '</div>';
+?>
+
+<style>
+#btn_set_memo { color: red; }
+
+</style>
+
+<script>
+function set_memo() {
+	const file_md = document.getElementById("file_md");
+	const file_title = document.getElementById("file_title");
+	const export_area = document.getElementById("export_area");
+	const export_cmd = document.getElementById("export_cmd");
+
+//  alert(file_md.value);
+	const ai_prompt = "このタイトルのブログ記事のh2見出しを5個用意して下さい。\n日本語30文字以内でお願いします。";
+	export_area.value = file_title.value + '\n' + ai_prompt;
+
+	export_cmd.value = 'sudo chmod 777 ' + file_md.value;
+}
+
+function copy_clipboard(id = null) {
+	// クリップボードコピー
+	const export_area_value = document.getElementById(id).value;
+	navigator.clipboard.writeText(export_area_value);
+}
+
+</script>
+
+<?php
 	foreach ($test_array as $i => $d) {
-		$ret .= '<div style="color: blue;">'. $d. '</div>';
+//		$ret .= '<div style="color: blue;">'. $d. '</div>';
 	}
 	return $ret;
 
