@@ -303,6 +303,10 @@ function set_shortcode(){
 
 	$ret .= '<textarea id="export_cmd"></textarea>';
 	$ret .= '<input type="submit" id="copy_cmd" onclick="copy_clipboard(\'export_cmd\');" value="copy_cmd" />';
+
+	$ret .= '<textarea id="bulk_set" style="height: 300px;"></textarea>';
+	$ret .= '<input type="submit" id="bulk_convert" onclick="bulk_convert();" value="bulk_convert" />';
+	$ret .= '<textarea id="bulk_out" style="height: 300px;"></textarea>';
 	$ret .= '</div>';
 ?>
 
@@ -312,6 +316,9 @@ function set_shortcode(){
 </style>
 
 <script>
+const ai_prompt = "このタイトルのブログ記事のh2見出しを5個用意して下さい。\n日本語30文字以内でお願いします。";
+const cmd_1 = 'sudo chmod 777 ';
+
 function set_memo() {
 	const file_md = document.getElementById("file_md");
 	const file_title = document.getElementById("file_title");
@@ -319,7 +326,6 @@ function set_memo() {
 	const export_cmd = document.getElementById("export_cmd");
 
 //  alert(file_md.value);
-	const ai_prompt = "このタイトルのブログ記事のh2見出しを5個用意して下さい。\n日本語30文字以内でお願いします。";
 	export_area.value = file_title.value + '\n' + ai_prompt;
 
 	export_cmd.value = 'sudo chmod 777 ' + file_md.value;
@@ -331,6 +337,26 @@ function copy_clipboard(id = null) {
 	navigator.clipboard.writeText(export_area_value);
 }
 
+function bulk_convert() {
+	// 記事要素 複数変換
+	const bulk_set = document.getElementById("bulk_set");
+	const bulk_out = document.getElementById("bulk_out");
+	const bs = bulk_set.value.split('\t').filter(Boolean); // タブ区切りして、空要素除去
+//	console.log(bs);
+//	console.log(ai_prompt);
+//	console.log(cmd_1);
+
+	let bo = [];
+	bs.forEach((element) => 
+		bo.push(element.replace(/\n/g, ""))
+	);
+//	console.log(bo);
+	const out = bo[2] + '\n' + ai_prompt + '\n\n'
+		+ bo[4] + '\n' + ai_prompt + '\n\n'
+		+ bo[6] + '\n' + ai_prompt + '\n\n';
+
+	bulk_out.value = out;
+}
 </script>
 
 <?php
