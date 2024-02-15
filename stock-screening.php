@@ -304,9 +304,12 @@ function set_shortcode(){
 	$ret .= '<textarea id="export_cmd"></textarea>';
 	$ret .= '<input type="submit" id="copy_cmd" onclick="copy_clipboard(\'export_cmd\');" value="copy_cmd" />';
 
-	$ret .= '<textarea id="bulk_set" style="height: 300px;"></textarea>';
+	$ret .= '<textarea id="bulk_set" style="height: 300px; background: gray;"></textarea>';
 	$ret .= '<input type="submit" id="bulk_convert" onclick="bulk_convert();" value="bulk_convert" />';
 	$ret .= '<textarea id="bulk_out" style="height: 300px;"></textarea>';
+
+	$ret .= '<input type="submit" id="bulk_cmd" onclick="bulk_cmd();" value="bulk_cmd" />';
+	$ret .= '<textarea id="bulk_cmd_out" style="height: 300px;"></textarea>';
 	$ret .= '</div>';
 ?>
 
@@ -318,7 +321,14 @@ function set_shortcode(){
 <script>
 const ai_prompt = "このタイトルのブログ記事のh2見出しを5個用意して下さい。\n日本語30文字以内でお願いします。";
 const cmd_1 = 'sudo chmod 777 ';
+const cmd_2 = 'sudo cat /home/tmp_github/tools/tmp/code_qiita.md /home/tmp_github/tools/article.log /home/tmp_github/tools/tmp/templates/ad_2.md > ./{file} && '
+			 + 'sudo sh /home/tmp_github/tools/tmp/ch_code_qiita.sh {file} "{title}" "{keyword}" && '
+			 + 'sudo sh /home/tmp_github/tools/tmp/ch_code_qiita.sh {file} "{title}" "{keyword}" && '
+			 + 'sudo sh /home/tmp_github/tools/tmp/tools_ch_type.sh {file}';
 
+/**
+ *
+ **/
 function set_memo() {
 	const file_md = document.getElementById("file_md");
 	const file_title = document.getElementById("file_title");
@@ -331,12 +341,18 @@ function set_memo() {
 	export_cmd.value = 'sudo chmod 777 ' + file_md.value;
 }
 
+/**
+ *
+ **/
 function copy_clipboard(id = null) {
 	// クリップボードコピー
 	const export_area_value = document.getElementById(id).value;
 	navigator.clipboard.writeText(export_area_value);
 }
 
+/**
+ *
+ **/
 function bulk_convert() {
 	// 記事要素 複数変換
 	const bulk_set = document.getElementById("bulk_set");
@@ -356,6 +372,37 @@ function bulk_convert() {
 		+ bo[6] + '\n' + ai_prompt + '\n\n';
 
 	bulk_out.value = out;
+}
+
+/**
+ *
+ **/
+function bulk_cmd() {
+	// 記事要素 複数変換
+	const bulk_set = document.getElementById("bulk_set");
+	const bulk_out = document.getElementById("bulk_out");
+	const bs = bulk_set.value.split('\t').filter(Boolean); // タブ区切りして、空要素除去
+//	console.log(bs);
+//	console.log(ai_prompt);
+//	console.log(cmd_1);
+
+	let bo = [];
+	bs.forEach((element) => 
+		bo.push(element.replace(/\n/g, ""))
+	);
+//	console.log(bo);
+
+	cmds = 	cmd_2.replace(/{file}/g, bo[1]).replace(/{title}/g, bo[2]).replace(/{keyword}/g, bo[0])
+	console.log(cmds);
+
+	const out = cmd_1 + bo[1] + '\n\n'
+		+ cmd_2.replace(/{file}/g, bo[1]).replace(/{title}/g, bo[2]).replace(/{keyword}/g, bo[0]) + '\n\n'
+		+ cmd_1 + bo[3] + '\n\n'
+		+ cmd_2.replace(/{file}/g, bo[3]).replace(/{title}/g, bo[4]).replace(/{keyword}/g, bo[0]) + '\n\n'
+		+ cmd_1 + bo[5] + '\n\n'
+		+ cmd_2.replace(/{file}/g, bo[5]).replace(/{title}/g, bo[6]).replace(/{keyword}/g, bo[0]) + '\n\n';
+
+	bulk_cmd_out.value = out;
 }
 </script>
 
