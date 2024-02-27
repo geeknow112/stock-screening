@@ -436,7 +436,7 @@ function bulk_prompt_convert() {
 	const title = bo[2];
 	const keyword = bo[0];
 
-	const about = 'マネーフォワード';
+	const about = 'クラウドワークス';
 	const who = '初心者エンジニア';
 	var target = '　' + about + ' について' + who + 'を対象';
 
