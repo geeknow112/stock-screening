@@ -310,6 +310,12 @@ function set_shortcode(){
 
 	$ret .= '<input type="submit" id="bulk_cmd" onclick="bulk_cmd();" value="bulk_cmd" />';
 	$ret .= '<textarea id="bulk_cmd_out" style="height: 300px;"></textarea>';
+
+	// chatgpt用 prompt作成
+	$ret .= '<textarea id="bulk_prompt_set" style="height: 300px; background: lightskyblue;"></textarea>';
+	$ret .= '<input type="submit" id="bulk_prompt_convert" onclick="bulk_prompt_convert();" value="bulk_prompt_convert" />';
+	$ret .= '<textarea id="bulk_prompt_out" style="height: 300px;"></textarea>';
+
 	$ret .= '</div>';
 ?>
 
@@ -403,6 +409,87 @@ function bulk_cmd() {
 		+ cmd_2.replace(/{file}/g, bo[5]).replace(/{title}/g, bo[6]).replace(/{keyword}/g, bo[0]) + '\n\n';
 
 	bulk_cmd_out.value = out;
+}
+
+/**
+ *
+ **/
+function bulk_prompt_convert() {
+	// 記事要素 複数変換
+	const bset = document.getElementById("bulk_prompt_set");
+	const bout = document.getElementById("bulk_prompt_out");
+	const bs = bset.value.split('\t').filter(Boolean); // タブ区切りして、空要素除去
+//	console.log(bs);
+
+	let bo = [];
+	bs.forEach((element) => 
+		bo.push(element.replace(/\n/g, ""))
+	);
+	console.log(bo);
+/*
+	const out = bo[2] + '\n' + ai_prompt + '\n\n'
+		+ bo[4] + '\n' + ai_prompt + '\n\n'
+		+ bo[6] + '\n' + ai_prompt + '\n\n';
+*/
+
+	const url = bo[1];
+	const title = bo[2];
+	const keyword = bo[0];
+
+	const about = 'マネーフォワード';
+	const who = '初心者エンジニア';
+	var target = '　' + about + ' について' + who + 'を対象';
+
+	var start = '「こんにちは。今回は、\n';
+	start += about + 'について' + who + '\n';
+	start += 'に向けて、」';
+
+	const headers = bo[3] + '\n'
+				  + bo[4] + '\n'
+				  + bo[5] + '\n'
+				  + bo[6] + '\n'
+				  + bo[7];
+
+
+	var out = url + '\n';
+	out += '\n';
+
+	out += '・下記の条件でタイトルと、ブログ記事を書いてください。\n';
+	out += title + '\n';
+	out += '\n';
+
+	out += '・キーワードを下記にしてください。\n';
+	out += keyword + '\n';
+	out += '\n';
+
+	out += '・対象者を下記にしてください。\n';
+	out += target + '\n';
+	out += '\n';
+	out += '\n';
+
+	out += '・日本語で、必ず3,000文字以上で作ってください。\n';
+	out += '\n';
+
+
+	out += '冒頭は、下記で作成してください。\n';
+	out += start + '\n';
+	out += '\n';
+
+	out += '・参考となるブログ記事のURLを2個以上掲載してください。\n';
+	out += '\n';
+
+	out += '・見出しには下記を使ってください。(見出しにはの行頭には ## このタグを置いてください。)\n';
+	out += headers + '\n';
+	out += '\n';
+
+	out += '・サンプルコードを各見出しに用意してください。\n';
+	out += '\n';
+
+	out += '・markdown表記してください。\n';
+	out += '\n';
+
+	bout.value = out;
+
 }
 </script>
 
