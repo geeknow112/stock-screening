@@ -435,8 +435,9 @@ function bulk_prompt_convert() {
 	const url = bo[1];
 	const title = bo[2];
 	const keyword = bo[0];
-
-	const about = 'クラウドワークス';
+	const keywords = keyword.split(',');
+	
+	const about = keywords[0];
 	const who = '初心者エンジニア';
 	var target = '　' + about + ' について' + who + 'を対象';
 
