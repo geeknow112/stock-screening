@@ -21,6 +21,15 @@ class MenuController extends Ext_Controller_Action
 	 *
 	 **/
 	public function listAction() {
+$url = 'https://kabuyoho.ifis.co.jp/index.php?action=tp1&sa=report_ts&bcode=9433';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+$output = curl_exec($ch) or die ('error '. curl_error($ch));
+curl_close($ch);
+mb_language('Japanese');
+$html_source = mb_convert_encoding($output, 'UTF-8', 'auto');
+print_r($html_source);
+
 		$get = (object) $_GET;
 		$post = (object) $_POST;
 
