@@ -363,7 +363,12 @@ foreach ($g_result as $stock) {
 	$result[$code] = $haitou;
 }
 
-$this->vd($result);exit;
+//$this->vd($result);exit;
+
+foreach ($result as $stock => $haitou) {
+	echo sprintf('<table><tr><td>%s</td><td>%s</td></tr></table>', $stock, $haitou[0]);
+}
+exit;
 
 		$get = (object) $_GET;
 		$post = (object) $_POST;
