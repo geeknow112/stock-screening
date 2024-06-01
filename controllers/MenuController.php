@@ -21,6 +21,7 @@ class MenuController extends Ext_Controller_Action
 	 *
 	 **/
 	public function listAction() {
+/*
 $url = 'https://kabuyoho.ifis.co.jp/index.php?action=tp1&sa=report_ts&bcode=9433';
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
@@ -29,18 +30,67 @@ curl_close($ch);
 mb_language('Japanese');
 $html_source = mb_convert_encoding($output, 'UTF-8', 'auto');
 print_r($html_source);
+*/
+
+//$file = dirname(__FILE__). '/../download/9433.html';
+$file = dirname(__FILE__). '/../download/5406.html';
+//$file = dirname(__FILE__). '/../download/3436.html';
+$html = file_get_contents($file);
+$html = preg_replace('/\t/', '', $html);
+$html = preg_replace('/\n/', '', $html);
+$html = preg_replace('/&nbsp/', 'ç©ºæ¬„', $html);
+
+//$this->vd($html);
+$ret = preg_match('/<table class="tb_comp_ts">.*?<\/table>/', $html, $match);
+
+$ret = preg_match('/<th class="em th_stock_comp">.*?<br>/', $html, $main); // main stock
+$ret = preg_match_all('/<th class="th_stock_comp">.*?<br>/', $html, $subs); // sub stock
+$ret = preg_match('/<th class="none_right th_stock_comp">.*?<br>/', $html, $end); // end stock
+
+$ret = preg_match_all('/<td class="em str_center">.*?<\/td>/', $html, $main_info); // main_info
+$ret = preg_match_all('/<td class="str_center">.*?<\/td>/', $html, $subs_info); // subs_info
+$ret = preg_match_all('/<td class="none_right str_center">.*?<\/td>/', $html, $end_info); // end_info
+
+//$this->vd(array($ret, $match, $main, $subs, $end, $main_info, $subs_info, $end_info));
+//$this->vd(array($main, $main_info[0][1]));
+
+$main = preg_replace('/<br>/', '', $main[0]);
+$end = preg_replace('/<br>/', '', $end[0]);
+
+$mi = preg_replace('/<br>/', '', $main_info[0][1]);
+if (preg_match('/^.*?(åº•å€¤åœçªå…¥)/', $mi, $m)) {
+	$result[$main] = $m[1];
+}
+
+$this->vd($subs_info);
+$n = 6;
+foreach ($subs[0] as $i => $d) {
+	$sub = preg_replace('/<br>/', '', $d);
+	$si = preg_replace('/<br>/', '', $subs_info[0][$n]);
+	if (preg_match('/^.*?(åº•å€¤åœçªå…¥)/', $si, $s)) {
+		$result[$sub] = $s[1];
+	}
+	$n++;
+}
+
+$ei = preg_replace('/<br>/', '', $end_info[0][1]);
+if (preg_match('/^.*?(åº•å€¤åœçªå…¥)/', $ei, $e)) {
+	$result[$end] = $e[1];
+}
+
+$this->vd($result);
 
 		$get = (object) $_GET;
 		$post = (object) $_POST;
 
 
 
-//wpƒƒOƒCƒ“î•ñŠÖ˜A‚ğæ“¾
+//wpãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±é–¢é€£ã‚’å–å¾—
 $wp_user_info = wp_get_current_user();
-//echo $user -> user_login; //ƒƒOƒCƒ“ID‚ğæ“¾
+//echo $user -> user_login; //ãƒ­ã‚°ã‚¤ãƒ³IDã‚’å–å¾—
 $user_login = $wp_user_info->user_login;
 
-//DBƒRƒlƒNƒ^‚ğ¶¬
+//DBã‚³ãƒã‚¯ã‚¿ã‚’ç”Ÿæˆ
 $host = 'localhost';
 $username = 'root';
 $password = 'aErQl0cbmYmO';
@@ -54,9 +104,9 @@ if ($mysqli->connect_error) {
 
 $sql = "select max(date) as max_date from s4042 limit 10;";
 
-//SQL•¶‚ğÀs‚·‚é
+//SQLæ–‡ã‚’å®Ÿè¡Œã™ã‚‹
 $data_set = $mysqli->query($sql);
-//ˆµ‚¢‚â‚·‚¢Œ`‚É•Ï‚¦‚é
+//æ‰±ã„ã‚„ã™ã„å½¢ã«å¤‰ãˆã‚‹
 $result = [];
 while($row = $data_set->fetch_assoc()){
 	$rows[] = $row;
@@ -87,12 +137,12 @@ var_dump($rows);
 	}
 
 	public function testSC() {
-		//wpƒƒOƒCƒ“î•ñŠÖ˜A‚ğæ“¾
+		//wpãƒ­ã‚°ã‚¤ãƒ³æƒ…å ±é–¢é€£ã‚’å–å¾—
 		$wp_user_info = wp_get_current_user();
-		//echo $user -> user_login; //ƒƒOƒCƒ“ID‚ğæ“¾
+		//echo $user -> user_login; //ãƒ­ã‚°ã‚¤ãƒ³IDã‚’å–å¾—
 		$user_login = $wp_user_info->user_login;
 
-		//DBƒRƒlƒNƒ^‚ğ¶¬
+		//DBã‚³ãƒã‚¯ã‚¿ã‚’ç”Ÿæˆ
 		$host = 'localhost';
 		$username = 'root';
 		$password = 'aErQl0cbmYmO';
@@ -106,9 +156,9 @@ var_dump($rows);
 
 		$sql = "select max(date) as max_date from s4042 limit 10;";
 
-		//SQL•¶‚ğÀs‚·‚é
+		//SQLæ–‡ã‚’å®Ÿè¡Œã™ã‚‹
 		$data_set = $mysqli->query($sql);
-		//ˆµ‚¢‚â‚·‚¢Œ`‚É•Ï‚¦‚é
+		//æ‰±ã„ã‚„ã™ã„å½¢ã«å¤‰ãˆã‚‹
 		$result = [];
 		while($row = $data_set->fetch_assoc()){
 			$rows[] = $row;
