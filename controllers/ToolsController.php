@@ -70,6 +70,17 @@ function js_typing($atts){
 			$ex[$row->id][] = $word. ':'. $dc[$word];
 		}
 		$dic = implode(';', $ex[$row->id]);
+
+		$means = json_decode($row->keyword1);
+		foreach ($means as $en => $jp) {
+			$ex2[$row->id][] = $en. ': '. $jp;
+		}
+
+		if ($ex2[$row->id]) {
+			$dic2 = implode(';', $ex2[$row->id]);
+			$dic .= '&emsp;&emsp;&emsp;'. $dic2;
+		}
+
 		echo '<p class="dictionary" id="'. $row->id. '" style="display : none;">'. $dic. '</p>';
 	}
 
@@ -87,12 +98,12 @@ echo <<< EOD
 	let dic = [];
 	// objectのforeach
 	Object.keys(test).forEach(function (key) {
-  		//console.log(key);
+//			console.log(test[key].id);
 		Q.push(test[key].innerText);
 		ids.push(test[key].id);
 		dic.push(dict[key].innerText);
 	});
-	
+
 	//let Q = [test[0].innerText, test[1].innerText, test[2].innerText, test[3].innerText, test[4].innerText, test[5].innerText];
 //		"I_ll stand up for what I believe in and won_t yield to any threats."];
 
