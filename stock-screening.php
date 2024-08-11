@@ -19,6 +19,7 @@ require_once(dirname(__DIR__). '/stock-screening/models/StockTransfer.php');
 
 //require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
+require_once(dirname(__DIR__). '/stock-screening/controllers/ToolsController.php');
 
 //require(__DIR__. '/library/vendor/vendor_phpspreadsheet/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
