@@ -156,6 +156,18 @@ function push_Keydown(event) {
 </script>
 EOD;
 
+	$html = '<div id="str">test</div>';
+	$html .= '	<div style="height: 600px">';
+	$html .= '	<h1 id="number"></h1>';
+	$html .= '	<img src="http://hack-note.com/wp-content/uploads/2024/05/146.png" id="img" width="400px" />';
+	$html .= '	<span id="sens_output" style="font-size: 30px; color: blue;"></span>';
+	$html .= '	<br />';
+	$html .= '	<span id="dict_output" style="color: blue;"></span>';
+	$html .= '	<center>';
+	$html .= '		<h1 id="start" class="text" style="color: blue;">何かキーを押して下さい</h1>';
+	$html .= '	</center>';
+	$html .= '</div>';
+
 	return $html;
 }
 add_shortcode('jstype','js_typing');
