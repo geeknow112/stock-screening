@@ -50,6 +50,7 @@ function js_typing($atts){
 		$str = str_replace("’", "_", $row->sentence);
 		$str = str_replace("'", "_", $str);
 		$str = str_replace("/", "_", $str);
+		$str = str_replace("‘", "_", $str);
 		echo '<p class="sentence" id="'. $row->id. '" style="display : none;">'. $str. '</p>';
 	}
 	
@@ -78,7 +79,7 @@ function js_typing($atts){
 
 		if ($ex2[$row->id]) {
 			$dic2 = implode(';', $ex2[$row->id]);
-			$dic .= '&emsp;&emsp;&emsp;'. $dic2;
+			$dic = $dic2;
 		}
 
 		echo '<p class="dictionary" id="'. $row->id. '" style="display : none;">'. $dic. '</p>';
@@ -127,7 +128,7 @@ function push_Keydown(event) {
 	document.getElementById("number").innerHTML = ids[Q_No];
 	//document.getElementById("sens_output").innerHTML = Q[Q_No];
 	//console.log(dic[Q_No].replaceAll(';', '<br>'));
-	document.getElementById("dict_output").innerHTML = dic[Q_No].replaceAll(';', '&emsp;&emsp;');
+	document.getElementById("dict_output").innerHTML = dic[Q_No].replaceAll(';', '<br>');
 	document.getElementById("img").src = "http://hack-note.com/wp-content/uploads/duo_image/" + ids[Q_No] + ".png";
 	
 	if (Q_l == Q_l-Q_i) {
@@ -165,6 +166,12 @@ function push_Keydown(event) {
 }
 
 </script>
+<style>
+	#dict_output::after{
+		content:"\A";
+		white-space:pre;
+	}
+</style>
 EOD;
 
 	$html .= '<div style="height: 600px">';
@@ -172,11 +179,10 @@ EOD;
 	$html .= '	<img src="http://hack-note.com/wp-content/uploads/2024/05/146.png" id="img" width="400px" />';
 	$html .= '	<span id="sens_output" style="font-size: 30px; color: blue;"></span>';
 	$html .= '	<br />';
-	$html .= '	<span id="dict_output" style="color: blue;"></span>';
-	$html .= '	<br /><br />';
 	$html .= '	<center>';
 	$html .= '		<h1 id="start" class="text" style="color: blue;">何かキーを押して下さい</h1>';
 	$html .= '	</center>';
+	$html .= '	<span id="dict_output" style="color: blue;"></span>';
 	$html .= '</div>';
 
 	return $html;
