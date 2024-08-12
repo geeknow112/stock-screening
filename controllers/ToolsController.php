@@ -77,6 +77,7 @@ function js_typing($atts){
 			$ex2[$row->id][] = $en. ': '. $jp;
 		}
 
+		$dic = null;
 		if ($ex2[$row->id]) {
 			$dic2 = implode(';', $ex2[$row->id]);
 			$dic = $dic2;
@@ -128,7 +129,8 @@ function push_Keydown(event) {
 	document.getElementById("number").innerHTML = ids[Q_No];
 	//document.getElementById("sens_output").innerHTML = Q[Q_No];
 	//console.log(dic[Q_No].replaceAll(';', '<br>'));
-	document.getElementById("dict_output").innerHTML = dic[Q_No].replaceAll(';', '<br>');
+//	document.getElementById("dict_output").innerHTML = dic[Q_No].replaceAll(';', '<br>');
+	document.getElementById("sidebar").innerHTML = dic[Q_No].replaceAll(';', '<br>');
 	document.getElementById("img").src = "http://hack-note.com/wp-content/uploads/duo_image/" + ids[Q_No] + ".png";
 	
 	if (Q_l == Q_l-Q_i) {
@@ -171,19 +173,75 @@ function push_Keydown(event) {
 		content:"\A";
 		white-space:pre;
 	}
+
+	#header-in, #menu-menu-1{
+		display: none;
+	}
+
+	#wrap_img {
+#		width: 700px;
+		float: left;
+		margin-right: 40px;
+	}
+
+	#img {
+		width: 800px;
+		height: 350px;
+		object-fit: cover;
+		object-position: right top;
+	}
+
+	#dict_output {
+		margin-left: 10px;
+		padding: 20px;
+		background: black;
+		font-weight: bold;
+		color: white;
+#		height: 100px;
+	}
+
+	#sidebar {
+		margin-left: 10px;
+		padding: 20px;
+		background: black;
+		font-weight: bold;
+		color: white;
+#		height: 100px;
+	}
+
+	.clear {
+		clear: both;
+	}
+
+	#sens_output {
+		font-size: 1px;
+		color: blue;
+	}
+
+	#start {
+		font-size: 30px;
+		#font-family: serif;
+		font-family: "Gill Sans", sans-serif;
+		#font-family: system-ui;
+		font-weight: bold;
+		color: blue;
+	}
 </style>
 EOD;
 
-	$html .= '<div style="height: 600px">';
-	$html .= '	<h1 id="number"></h1>';
-	$html .= '	<img src="http://hack-note.com/wp-content/uploads/2024/05/146.png" id="img" width="400px" />';
-	$html .= '	<span id="sens_output" style="font-size: 30px; color: blue;"></span>';
-	$html .= '	<br />';
-	$html .= '	<center>';
-	$html .= '		<h1 id="start" class="text" style="color: blue;">何かキーを押して下さい</h1>';
-	$html .= '	</center>';
-	$html .= '	<span id="dict_output" style="color: blue;"></span>';
+	$html .= '<div style="height: 350px">';
+	$html .= '	<h4 id="number"></h4>';
+	$html .= '	<div>';
+	$html .= '		<div id="wrap_img"><img src="http://hack-note.com/wp-content/uploads/2024/05/146.png" id="img" /></div>';
+//	$html .= '		<div id="dict_output"></div>';
+	$html .= '	</div>';
+	$html .= '	<p id="sens_output" class="clear"></p>';
+//	$html .= '	<br />';
+//	$html .= '	<center>';
+	$html .= '		<p id="start" class="text" style="color: blue;">何かキーを押して下さい</p>';
+//	$html .= '	</center>';
 	$html .= '</div>';
+	$html .= '<br><br>';
 
 	return $html;
 }
