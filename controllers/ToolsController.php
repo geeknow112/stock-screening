@@ -31,6 +31,10 @@ class ToolsController extends Ext_Controller_Action
 	}
 }
 
+function vd($obj = null) {
+	echo '<pre>'; var_dump($obj); echo '</pre>'; 
+}
+
 function js_typing($atts){
 	//return "受け取った数字は".$atts[0]."と".$atts[1]."です";
 	
@@ -76,7 +80,13 @@ function js_typing($atts){
 			if (empty($dc[$word])) { continue; }
 			$ex[$row->id][] = $word. ':'. $dc[$word];
 		}
-		$dic = implode(';', $ex[$row->id]);
+
+		if ($row->id == '543') { // TODO: これだけsysteがdownする
+			//if ($i == 12) { print_r(array($i, $row->id, vd($ex)));exit; }
+			$dic = null;
+		} else {
+			$dic = (!empty($ex)) ? implode(';', $ex[$row->id]) : null;
+		}
 
 		$means = json_decode($row->keyword1);
 		foreach ($means as $en => $jp) {
@@ -85,7 +95,7 @@ function js_typing($atts){
 
 		$dic = null;
 		if ($ex2[$row->id]) {
-			$dic2 = implode(';', $ex2[$row->id]);
+			$dic2 = (!empty($ex2)) ? implode(';', $ex2[$row->id]) : null;
 			$dic = $dic2;
 		}
 
