@@ -51,7 +51,13 @@ function js_typing($atts){
 		$str = str_replace("'", "_", $str);
 		$str = str_replace("/", "_", $str);
 		$str = str_replace("‘", "_", $str);
-		echo '<p class="sentence" id="'. $row->id. '" style="display : none;">'. $str. '</p>';
+		$str = preg_replace("/“/", " ", $str);
+		$str = preg_replace("/”/", " ", $str);
+		$out[$row->id] = $str;
+	}
+
+	foreach ($out as $id => $sentence) {
+		echo '<p class="sentence" id="'. $id. '" style="display : none;">'. $sentence. '</p>';
 	}
 	
 	/** 

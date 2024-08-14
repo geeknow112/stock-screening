@@ -366,7 +366,7 @@ foreach ($g_result as $stock) {
 //$this->vd($result);exit;
 
 foreach ($result as $stock => $haitou) {
-	echo sprintf('<table><tr><td>%s</td><td>%s</td></tr></table>', $stock, $haitou[0]);
+	echo sprintf('<table><tr><td>%s</td><td>%s</td><td>%s</td></tr></table>', $stock, $stocks[$stock], $haitou[0]);
 }
 exit;
 
