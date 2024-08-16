@@ -147,7 +147,7 @@ function push_Keydown(event) {
 	//console.log(dic[Q_No].replaceAll(';', '<br>'));
 //	document.getElementById("dict_output").innerHTML = dic[Q_No].replaceAll(';', '<br>');
 	document.getElementById("sidebar").innerHTML = dic[Q_No].replaceAll(';', '<br>');
-	document.getElementById("img").src = "http://hack-note.com/wp-content/uploads/duo_image/" + ids[Q_No] + ".png";
+	document.getElementById("img").src = "http://hack-note.com/wp-content/uploads/duo_image/" + ids[Q_No].padStart(2,"0") + ".png";
 	
 	if (Q_l == Q_l-Q_i) {
 		// 問題を書き出す
