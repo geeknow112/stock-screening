@@ -53,6 +53,7 @@ class StockScreening {
 	 **/
 	function add_pages() {
 		add_menu_page('銘柄スクリーニング','銘柄スクリーニング',  'level_8', 'stock-screening', array($this,'menu_top'), '', 26);
+		add_menu_page('商品トラッキング','商品トラッキング',  'level_8', 'goods-tracking', array($this,'goods_tracking'), '', 26);
 	}
 
 	/**
@@ -70,6 +71,7 @@ class StockScreening {
 
 					// 検索画面
 					add_submenu_page('stock-screening', '商品検索','🔶商品検索', 'read', 'goods-list', array(&$this, 'goods_list'));
+					add_submenu_page('goods-tracking', '商品検索','🔶商品検索', 'read', 'goods-search', array(&$this, 'goods_search'));
 
 					// その他
 //					add_submenu_page('stock-screening', '日別商品集計','日別商品集計', 'read', 'sum-day-goods', array(&$this, 'sum_day_goods'));
@@ -171,6 +173,14 @@ class StockScreening {
 	 **/
 	function goods_list() {
 		$g = new GoodsController();
+		$g->listAction();
+	}
+
+	/**
+	 * 商品検索(トラッキング用)
+	 **/
+	function goods_search() {
+		$g = new ToolsController();
 		$g->listAction();
 	}
 
