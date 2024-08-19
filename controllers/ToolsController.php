@@ -21,6 +21,56 @@ class ToolsController extends Ext_Controller_Action
 	 *
 	 **/
 	public function listAction() {
+			$execFile = dirname(__DIR__). '/tools/keepa_goods_search.py';
+//			$execCmd = sprintf("python3 %s %s", $execFile, $idNumber);
+			$execCmd = sprintf("python3 %s", $execFile);
+			echo shell_exec($execCmd);
+
+
+echo <<< EOD
+<script>
+const rp = require('request-promise');
+
+const key = '5ug2rp1e0pmbhm8a6mlrd8eu34rh14a49559jd4ts0032c74dsnt4rts5n0erjmr';
+
+const queryJSON = {
+    "perPage": 100, // 1ページあたりの結果数
+    "page": 0, // ページ番号
+    "productType": 0, // 製品タイプ
+    "rootCategory": "2127209051", // ルートカテゴリID
+    "title": "ノートパソコン -Apple", // タイトルキーワード
+    "avg90_NEW_gte": 30000, // 直近90日の新品価格の平均が30,000円以上
+    "current_SALES_gte": 1000, // 現在のランキングが1,000位以上
+    "current_SALES_lte": 20000, // 現在のランキングが20,000位以下
+    "current_LISTPRICE_gte": 30000, // リスト価格が30,000円以上
+    "isPrimeExclusive": false // Prime限定ではない商品も含む
+};
+
+const options = {
+    url: 'https://api.keepa.com/query?domain=5&key=' + key,
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'Connection': 'keep-alive'
+    },
+    body: {
+        'selection': JSON.stringify(queryJSON)
+    },
+    json: true
+};
+alert(options);
+rp(options)
+    .then(response => {
+        const asinList = response.asinList; // 条件に合ったASINの配列
+        console.log('この条件にマッチするASINの合計数: ' + response.totalResults);
+        console.log('ASINリスト: ', asinList);
+    })
+    .catch(err => {
+        console.error('エラーが発生しました: ', err);
+    });
+
+</script>
+EOD;
 	}
 
 	/**
@@ -81,7 +131,7 @@ function js_typing($atts){
 			$ex[$row->id][] = $word. ':'. $dc[$word];
 		}
 
-		if ($row->id == '543') { // TODO: これだけsysteがdownする
+		if ($row->id == '543' || $row->id == '106') { // TODO: これだけsysteがdownする
 			//if ($i == 12) { print_r(array($i, $row->id, vd($ex)));exit; }
 			$dic = null;
 		} else {
