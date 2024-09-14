@@ -514,4 +514,16 @@ function bulk_prompt_convert() {
 }
 add_shortcode('test1','set_shortcode');
 
+/**
+ * webhook keepa to slack
+ * 
+ **/
+function webhook_keepa_to_slack() {
+	$dt = date('Y-m-d H:i:s');
+	$cmd = sprintf('curl -X POST --data \'{"text":"test_message from hack-note.com: %s."}\'', $dt);
+	exec($cmd. ' https://hooks.slack.com/services/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');
+	return true;
+}
+add_shortcode('webhook-kts','webhook_keepa_to_slack');
+
 $StockScreening = new StockScreening;
