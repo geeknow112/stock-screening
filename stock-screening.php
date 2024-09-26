@@ -521,7 +521,11 @@ add_shortcode('test1','set_shortcode');
 function webhook_keepa_to_slack() {
 	$dt = date('Y-m-d H:i:s');
 	$cmd = sprintf('curl -X POST --data \'{"text":"test_message from hack-note.com: %s."}\'', $dt);
-	exec($cmd. ' https://hooks.slack.com/services/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');
+	$webhook_json = dirname(__DIR__). '/stock-screening/webhook.json';
+	$webhooks = file_get_contents($webhook_json);
+	$webhook = (object) json_decode($webhooks, true);
+	$slack = $webhook->slack;
+	exec($cmd. ' '. $slack);
 	return true;
 }
 add_shortcode('webhook-kts','webhook_keepa_to_slack');
