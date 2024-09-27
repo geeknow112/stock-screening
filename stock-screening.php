@@ -17,7 +17,7 @@ require_once(dirname(__DIR__). '/stock-screening/models/Stock.php');
 require_once(dirname(__DIR__). '/stock-screening/models/StockTransfer.php');
  */
 
-//require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
+require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/ToolsController.php');
 
@@ -68,6 +68,7 @@ class StockScreening {
 				if (in_array($cur_user->user_login, array('admin', 'ceo', 'myu'))) {
 					// 登録画面
 //					add_submenu_page('stock-screening', '商品登録','🔷商品登録', 'read', 'goods-detail', array(&$this, 'goods_detail'));
+					add_submenu_page('goods-tracking', '商品投稿','🔷商品投稿', 'read', 'goods-post', array(&$this, 'goods_post'));
 
 					// 検索画面
 					add_submenu_page('stock-screening', '商品検索','🔶商品検索', 'read', 'goods-list', array(&$this, 'goods_list'));
@@ -102,6 +103,14 @@ class StockScreening {
 		echo 'stock screening git';
 		$m = new MenuController();
 		$m->listAction();
+	}
+
+	/**
+	 * 商品投稿
+	 **/
+	function goods_post() {
+		$g = new GoodsController();
+		$g->postAction();
 	}
 
 	/**

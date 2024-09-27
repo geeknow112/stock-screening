@@ -1,1 +1,1 @@
-# stock-screening
+# stock-management
