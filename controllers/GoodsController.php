@@ -181,8 +181,8 @@ class GoodsController extends Ext_Controller_Action
 				break;
 
 			case 'preview':
-				// \ƒf[ƒ^ƒvƒŒƒrƒ…[‰æ–Ê
-				// (PDF•Û‘¶Œ`®‚ÅƒvƒŒƒrƒ…[‚·‚é)
+				// ç”³è¾¼ãƒ‡ãƒ¼ã‚¿ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ç”»é¢
+				// (PDFä¿å­˜å½¢å¼ã§ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼ã™ã‚‹)
 				echo 'test preview';
 				$app = new Applicant;
 				$curUser = $app->getCurUser();
@@ -209,44 +209,56 @@ class GoodsController extends Ext_Controller_Action
 	}
 
 	/**
-	 * ¤•iî•ñ‚Ì©“®“Še
+	 * å•†å“æƒ…å ±ã®è‡ªå‹•æŠ•ç¨¿
 	 * 
 	 **/
 	public function postAction() {
+		$get = (object) $_GET;
+		$post = (object) $_POST;
+
 		ini_set('mbstring.internal_encoding', 'UTF-8');
 //		require_once("wp-load.php");
 
-		$title = "amazon goods post test";
-//		$content = '## —˜‰v¤•iI‚±‚ê‚ğˆÀ‚¢‚É”ƒ‚¤I\n [get_amazon_code "B09G95LCFL"]';
-		$content = '## profit goods'. PHP_EOL. '[get_amazon_code "B09G95LCFL"]';
+		$Goods = new Goods;
+		$codes = $Goods->getList();
 
-		//“Še‚ğ’Ç‰Á
-		$new_post = array(
-			'post_title' => $title, 
-			'post_content' => $content, 
-//			'post_status' => 'publish', 
-			'post_status' => 'draft', 
-			'post_date' => date('Y-m-d H:i:s'), 
-			'post_author' => 1, 
-			'post_name' => 'amazon-test-goods', 
-			'post_type' => 'post', 
-		);
-var_dump($new_post);
-//		$post_id = wp_insert_post($new_post);
-echo $post_id;
-		//ƒJƒeƒSƒŠ[‚ğİ’è
-		$categioryids = array('monetize');
-		wp_set_object_terms($post_id, $categioryids, 'category');
+		$cnt = 0;
+		foreach ($codes as $asin => $acode) {
+//			if ($cnt ==2) { break; }
+			$content  = '## åˆ©ç›Šå•†å“ï¼ã“ã‚Œã‚’å®‰ã„æ™‚ã«è²·ã†'. PHP_EOL;
+			$content .= '[get_amazon_code "'. $asin. '"]'. PHP_EOL. PHP_EOL;
+			$content .= 'https://dyn.keepa.com/r/?domain=5&asin='. $asin. PHP_EOL. PHP_EOL;
+			$content .= '<img src="https://graph.keepa.com/pricehistory.png?asin='. $asin. '&domain=co.jp" value="'. $asin. '">'. PHP_EOL. PHP_EOL;
 
-		//ƒJƒXƒ^ƒ€ƒtƒB[ƒh‚É’l‚ğ’Ç‰Á
-//		$customfieldname = "ƒJƒXƒ^ƒ€ƒtƒB[ƒ‹ƒh–¼";
-//		$customfieldvalue = "’l";
-//		add_post_meta($post_id, $customfieldname, $customfieldvalue, true );
+			//æŠ•ç¨¿ã‚’è¿½åŠ 
+			$new_post = array(
+				'post_title' => sprintf('Amazon å•†å“ %s %s', $asin, $acode), 
+				'post_content' => $content, 
+				'post_status' => ($get->status == 'publish') ? 'publish' : 'draft', 
+				'post_date' => date('Y-m-d H:i:s'), 
+				'post_author' => 1, 
+				'post_name' => sprintf('ag-%s-%s', $asin, $acode), 
+				'post_type' => 'post', 
+			);
+$this->vd($new_post);
+			if ($get->status) { $post_id = wp_insert_post($new_post); }
+$this->vd($post_id);
+			//ã‚«ãƒ†ã‚´ãƒªãƒ¼ã‚’è¨­å®š
+			$categioryids = array('amazon_goods', 'monetize');
+			wp_set_object_terms($post_id, $categioryids, 'category');
+
+			//ã‚«ã‚¹ã‚¿ãƒ ãƒ•ã‚£ãƒ¼ãƒ‰ã«å€¤ã‚’è¿½åŠ 
+//			$customfieldname = "ã‚«ã‚¹ã‚¿ãƒ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å";
+//			$customfieldvalue = "å€¤";
+//			add_post_meta($post_id, $customfieldname, $customfieldvalue, true );
+
+			$cnt++;
+		}
 	}
 }
 
 /**
- * ASINƒR[ƒh‚©‚çA•R‚Ã‚­Amazon ƒAƒ\ƒVƒGƒCƒg‚ÌƒR[ƒh‚ğ•Ô‚·
+ * ASINã‚³ãƒ¼ãƒ‰ã‹ã‚‰ã€ç´ã¥ãAmazon ã‚¢ã‚½ã‚·ã‚¨ã‚¤ãƒˆã®ã‚³ãƒ¼ãƒ‰ã‚’è¿”ã™
  * 
  **/
 function get_amazon_assosiate_code($atts = null) {
