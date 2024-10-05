@@ -312,8 +312,10 @@ class Stock extends Ext_Model_Base {
 		//$this->vd($result);exit;
 
 		foreach ($result as $stock => $haitou) {
-			echo sprintf('<table><tr><td>%s</td><td>%s</td><td>%s</td></tr></table>', $stock, $stocks[$stock], $haitou);
+//			echo sprintf('<table><tr><td>%s</td><td>%s</td><td>%s</td></tr></table>', $stock, $stocks[$stock], $haitou);
 		}
+
+		return $result;
 	}
 
 	/**
