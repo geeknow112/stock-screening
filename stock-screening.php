@@ -20,6 +20,7 @@ require_once(dirname(__DIR__). '/stock-screening/models/StockTransfer.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/ToolsController.php');
+require_once(dirname(__DIR__). '/stock-screening/controllers/StockController.php');
 
 //require(__DIR__. '/library/vendor/vendor_phpspreadsheet/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -52,7 +53,7 @@ class StockScreening {
 	 * 
 	 **/
 	function add_pages() {
-		add_menu_page('銘柄スクリーニング','銘柄スクリーニング',  'level_8', 'stock-screening', array($this,'menu_top'), '', 26);
+		add_menu_page('銘柄スクリーニング','銘柄スクリーニング',  'level_8', 'stock-screening', array($this,'stock_screening'), '', 26);
 		add_menu_page('商品トラッキング','商品トラッキング',  'level_8', 'goods-tracking', array($this,'goods_tracking'), '', 26);
 	}
 
@@ -71,7 +72,7 @@ class StockScreening {
 					add_submenu_page('goods-tracking', '商品投稿','🔷商品投稿', 'read', 'goods-post', array(&$this, 'goods_post'));
 
 					// 検索画面
-					add_submenu_page('stock-screening', '銘柄取得','⚡銘柄取得', 'read', 'stock-screening', array(&$this, 'menu_top'));
+					add_submenu_page('stock-screening', '銘柄取得','⚡銘柄取得', 'read', 'stock-screening', array(&$this, 'stock_screening'));
 					add_submenu_page('stock-screening', '銘柄検索','🔶銘柄検索', 'read', 'stock-list', array(&$this, 'stock_list'));
 					add_submenu_page('goods-tracking', '商品検索','🔶商品検索', 'read', 'goods-search', array(&$this, 'goods_search'));
 
@@ -147,11 +148,20 @@ class StockScreening {
 	}
 
 	/**
+	 * 銘柄取得
+	 **/
+	function stock_screening() {
+		echo 'stock screening git';
+		$m = new StockController();
+		$m->screeningAction();
+	}
+
+	/**
 	 * 銘柄検索
 	 **/
 	function stock_list() {
 		echo 'stock screening git';
-		$m = new MenuController();
+		$m = new StockController();
 		$m->listAction();
 	}
 
