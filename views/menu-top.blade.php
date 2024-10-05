@@ -14,6 +14,11 @@
 
 <h2>現在底値圏　かつ、高配当の銘柄</h2>
 <div class="d-grid gap-2">
+	実行<input type="checkbox"> 
+	<br>
+	実行<input type="checkbox"> 
+	<br>
+
 	@foreach ($bottomStocks as $stock => $haitou)
 	<div>{{$stock}} : {{$stocks[$stock]}} : {{$haitou}}%</div>
 	@endforeach
