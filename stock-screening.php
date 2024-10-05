@@ -71,7 +71,8 @@ class StockScreening {
 					add_submenu_page('goods-tracking', '商品投稿','🔷商品投稿', 'read', 'goods-post', array(&$this, 'goods_post'));
 
 					// 検索画面
-					add_submenu_page('stock-screening', '商品検索','🔶商品検索', 'read', 'goods-list', array(&$this, 'goods_list'));
+					add_submenu_page('stock-screening', '銘柄取得','⚡銘柄取得', 'read', 'stock-screening', array(&$this, 'menu_top'));
+					add_submenu_page('stock-screening', '銘柄検索','🔶銘柄検索', 'read', 'stock-list', array(&$this, 'stock_list'));
 					add_submenu_page('goods-tracking', '商品検索','🔶商品検索', 'read', 'goods-search', array(&$this, 'goods_search'));
 
 					// その他
@@ -102,7 +103,7 @@ class StockScreening {
 	function menu_top() {
 		echo 'stock screening git';
 		$m = new MenuController();
-		$m->listAction();
+		$m->screeningAction();
 	}
 
 	/**
@@ -122,59 +123,11 @@ class StockScreening {
 	}
 
 	/**
-	 * 顧客詳細
-	 **/
-	function customer_detail() {
-		$c = new CustomerController();
-		$c->detailAction();
-	}
-
-	/**
-	 * 注文詳細
-	 **/
-	function sales_detail() {
-		$s = new SalesController();
-		$s->detailAction();
-	}
-
-	/**
 	 * 在庫詳細
 	 **/
 	function stock_detail() {
 		$s = new StockController();
 		$s->detailAction();
-	}
-
-	/**
-	 * 転送処理
-	 **/
-	function stock_transfer() {
-		$s = new StockController();
-		$s->transferAction();
-	}
-
-	/**
-	 * 在庫ロット番号登録
-	 **/
-	function stock_lot_regist() {
-		$s = new StockController();
-		$s->lotRegistAction();
-	}
-
-	/**
-	 * ロット管理
-	 **/
-	function lot_regist() {
-		$s = new SalesController();
-		$s->lotRegistAction();
-	}
-
-	/**
-	 * 日別集計
-	 **/
-	function sum_day_goods() {
-		$s = new SalesController();
-		$s->sumDayGoodsAction();
 	}
 
 	/**
@@ -194,59 +147,12 @@ class StockScreening {
 	}
 
 	/**
-	 * 顧客検索
-	 **/
-	function customer_list() {
-		$c = new CustomerController();
-		$c->listAction();
-	}
-
-	/**
-	 * 注文検索
-	 **/
-	function sales_list() {
-		$s = new SalesController();
-		$s->listAction();
-	}
-
-	/**
-	 * 在庫検索
+	 * 銘柄検索
 	 **/
 	function stock_list() {
-		$s = new StockController();
-		$s->listAction();
-	}
-
-	/**
-	 * 入庫予定日検索
-	 **/
-	function stock_receive() {
-		$s = new StockController();
-		$s->receiveAction();
-	}
-
-	/**
-	 * 在庫証明書
-	 **/
-	function stock_export() {
-		$s = new StockController();
-		$s->exportAction();
-	}
-
-	/**
-	 * 倉出伝票
-	 **/
-	function stock_export_day() {
-		$s = new StockController();
-		$s->exportDayAction();
-	}
-
-	/**
-	 * 配送表
-	 **/
-	function delivery_graph() {
-		$s = new SalesController();
-		$s->deliveryGraph();
+		echo 'stock screening git';
+		$m = new MenuController();
+		$m->listAction();
 	}
 
 	/**

@@ -22,6 +22,45 @@ class MenuController extends Ext_Controller_Action
 	 *
 	 **/
 	public function listAction() {
+		$get = (object) $_GET;
+		$post = (object) $_POST;
+
+		try {
+			// pagination
+			$this->setPager('Stock');
+			$wp_list_table = $this->getPager();
+
+		} catch (Exception $e) {
+			echo '<b>'. $e->getMessage(). '</b>';
+		}
+
+		global $wpdb;
+
+		$get->action = 'search';
+		switch($get->action) {
+			case 'search':
+			default:
+				$tb = new Goods;
+				$initForm = $tb->getInitForm();
+				$rows = $tb->getList($get, $un_convert = true);
+				$formPage = 'stock-list';
+//$this->vd($rows);
+				echo $this->get_blade()->run("stock-list", compact('get', 'post', 'rows', 'formPage', 'initForm', 'wp_list_table'));
+				break;
+		}
+	}
+
+	/**
+	 *
+	 **/
+	public function detailAction() {
+		echo $this->get_blade()->run("customer-detail");
+	}
+
+	/**
+	 *
+	 **/
+	public function screeningAction() {
 
 		$Stock = new Stock;
 		$initForm = $Stock->getInitForm();
@@ -64,7 +103,7 @@ unset($match);
 unset($result);
 
 		// 配当情報を整形
-		$Stock->convertDevidendInfo($g_result);
+		$bottomStocks = $Stock->convertDevidendInfo($g_result);
 
 		$get = (object) $_GET;
 		$post = (object) $_POST;
@@ -82,17 +121,10 @@ $this->vd($rows);
 //				$rows = $tb->getList($get, $un_convert = true);
 				$formPage = 'menu-top';
 //$this->vd($rows);
-				echo $this->get_blade()->run("menu-top", compact('rows', 'formPage', 'initForm'));
+				echo $this->get_blade()->run("menu-top", compact('rows', 'formPage', 'initForm', 'stocks', 'bottomStocks'));
 				break;
 		}
 		return $this->_test;
-	}
-
-	/**
-	 *
-	 **/
-	public function detailAction() {
-		echo $this->get_blade()->run("customer-detail");
 	}
 }
 ?>
