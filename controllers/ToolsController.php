@@ -90,6 +90,7 @@ function js_typing($atts){
 	
 	$section = $_GET["section"];
 //	print_r($section);
+	webhook_to_slack('start section : '. $section);
 	
 	global $wpdb;
 	//$no = $atts[0];
@@ -191,7 +192,13 @@ window.addEventListener("keydown", push_Keydown);
 function push_Keydown(event) {
 	let keyCode = event.key;
 	
-	// console.log(ids[Q_No]);
+	console.log(ids[Q_No]);
+	if (ids[Q_No] === undefined) {
+//		window.location.href = '/webhook-keepa-to-slack/';
+		location.reload();
+
+	}
+
 	document.getElementById("number").innerHTML = ids[Q_No];
 	//document.getElementById("sens_output").innerHTML = Q[Q_No];
 	//console.log(dic[Q_No].replaceAll(';', '<br>'));

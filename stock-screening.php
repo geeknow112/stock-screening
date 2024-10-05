@@ -524,6 +524,21 @@ function bulk_prompt_convert() {
 add_shortcode('test1','set_shortcode');
 
 /**
+ * webhook to slack
+ * 
+ **/
+function webhook_to_slack($str = null) {
+	$dt = date('Y-m-d H:i:s');
+	$cmd = sprintf('curl -X POST --data \'{"text":"message from hack-note.com: %s. \n %s. "}\'', $dt, $str);
+	$webhook_json = dirname(__DIR__). '/stock-screening/webhook.json';
+	$webhooks = file_get_contents($webhook_json);
+	$webhook = (object) json_decode($webhooks, true);
+	$slack = $webhook->slack;
+	exec($cmd. ' '. $slack);
+	return true;
+}
+
+/**
  * webhook keepa to slack
  * 
  **/
