@@ -105,6 +105,9 @@ unset($result);
 		// 配当情報を整形
 		$bottomStocks = $Stock->convertDevidendInfo($g_result);
 
+		// 自動投稿
+		$this->postAction($bottomStocks);
+
 		$get = (object) $_GET;
 		$post = (object) $_POST;
 
@@ -125,6 +128,57 @@ unset($result);
 				break;
 		}
 		return $this->_test;
+	}
+
+	/**
+	 * 情報の自動投稿
+	 * 
+	 **/
+	public function postAction($bottomStocks = null) {
+		$get = (object) $_GET;
+		$post = (object) $_POST;
+
+		ini_set('mbstring.internal_encoding', 'UTF-8');
+//		require_once("wp-load.php");
+
+		$Stock = new Stock;
+		$initForm = $Stock->getInitForm();
+		$stocks = $initForm['select']['stock_codes'];
+
+		$content  = '## 【銘柄取得】　現在底値圏　かつ、高配当の銘柄'. PHP_EOL;
+		$content  .= '| コード | 銘柄名 | 配当率 |'. PHP_EOL;
+		$content  .= '| ------------ | ------------ | ------------ |'. PHP_EOL;
+
+		foreach ($bottomStocks as $stock => $haitou) {
+			// | 7201  | 日産自動車 | 6.03 |
+			$content .= sprintf('| %s | %s | %s |', $stock, $stocks[$stock], $haitou). PHP_EOL;
+//			$content .= '[get_amazon_code "'. $asin. '"]'. PHP_EOL. PHP_EOL;
+//			$content .= 'https://dyn.keepa.com/r/?domain=5&asin='. $asin. PHP_EOL. PHP_EOL;
+//			$content .= '<img src="https://graph.keepa.com/pricehistory.png?asin='. $asin. '&domain=co.jp" value="'. $asin. '">'. PHP_EOL. PHP_EOL;
+		}
+
+		//投稿を追加
+		$today = date('YmdHis');
+		$new_post = array(
+			'post_title' => sprintf('現在底値圏　かつ、高配当の銘柄 %s', $today), 
+			'post_content' => $content, 
+			'post_status' => ($get->status == 'publish') ? 'publish' : 'draft', 
+			'post_date' => date('Y-m-d H:i:s'), 
+			'post_author' => 1, 
+			'post_name' => sprintf('stocks-ifis-%s', $today), 
+			'post_type' => 'post', 
+		);
+//$this->vd($new_post);
+		if ($get->status) { $post_id = wp_insert_post($new_post); }
+//$this->vd($post_id);
+		//カテゴリーを設定
+		$categioryids = array('ifis', 'investment');
+		wp_set_object_terms($post_id, $categioryids, 'category');
+
+		//カスタムフィードに値を追加
+//		$customfieldname = "カスタムフィールド名";
+//		$customfieldvalue = "値";
+//		add_post_meta($post_id, $customfieldname, $customfieldvalue, true );
 	}
 }
 ?>
