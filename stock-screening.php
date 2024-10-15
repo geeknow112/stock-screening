@@ -21,6 +21,7 @@ require_once(dirname(__DIR__). '/stock-screening/controllers/GoodsController.php
 require_once(dirname(__DIR__). '/stock-screening/controllers/MenuController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/ToolsController.php');
 require_once(dirname(__DIR__). '/stock-screening/controllers/StockController.php');
+require_once(dirname(__DIR__). '/stock-screening/controllers/StagingController.php');
 
 //require(__DIR__. '/library/vendor/vendor_phpspreadsheet/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -55,6 +56,7 @@ class StockScreening {
 	function add_pages() {
 		add_menu_page('銘柄スクリーニング','銘柄スクリーニング',  'level_8', 'stock-screening', array($this,'stock_screening'), '', 26);
 		add_menu_page('商品トラッキング','商品トラッキング',  'level_8', 'goods-tracking', array($this,'goods_tracking'), '', 26);
+		add_menu_page('検証環境','検証環境',  'level_8', 'staging', array($this,'staging'), '', 26);
 	}
 
 	/**
@@ -85,8 +87,9 @@ class StockScreening {
 				break;
 
 			case 'subscriber' :
-				if (in_array($cur_user->user_login, array('naitou'))) {
-					add_submenu_page('stock-screening', '配送予定表③','配送予定表③', 'read', 'delivery-graph', array(&$this, 'delivery_graph'));
+				if (in_array($cur_user->user_login, array('student'))) {
+					add_submenu_page('staging', 'コード検索','コード検索', 'read', 'staging-list', array(&$this, 'staging_list'));
+					add_submenu_page('staging', 'コード投稿','コード投稿', 'read', 'staging-detail', array(&$this, 'staging_detail'));
 				} else {
 					$this->remove_menus();
 				}
@@ -163,6 +166,22 @@ class StockScreening {
 		echo 'stock screening git';
 		$m = new StockController();
 		$m->listAction();
+	}
+
+	/**
+	 * STG
+	 **/
+	function staging_list() {
+		$m = new StagingController();
+		$m->listAction();
+	}
+
+	/**
+	 * STG 登録
+	 **/
+	function staging_detail() {
+		$m = new StagingController();
+		$m->detailAction();
 	}
 
 	/**
