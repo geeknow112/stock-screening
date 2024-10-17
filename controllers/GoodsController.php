@@ -225,9 +225,13 @@ class GoodsController extends Ext_Controller_Action
 		$cnt = 0;
 		foreach ($codes as $asin => $acode) {
 //			if ($cnt ==2) { break; }
+
+			$goods_url = 'https://dyn.keepa.com/r/?domain=5&asin='. $asin;
+			$img_src = sprintf("https://graph.keepa.com/pricehistory.png?asin=%s&domain=co.jp", $asin);
+
 			$content  = '## 利益商品！これを安い時に買う'. PHP_EOL;
 			$content .= '[get_amazon_code "'. $asin. '"]'. PHP_EOL. PHP_EOL;
-			$content .= 'https://dyn.keepa.com/r/?domain=5&asin='. $asin. PHP_EOL. PHP_EOL;
+			$content .= $goods_url. PHP_EOL. PHP_EOL;
 			$content .= '<img src="https://graph.keepa.com/pricehistory.png?asin='. $asin. '&domain=co.jp" value="'. $asin. '">'. PHP_EOL. PHP_EOL;
 
 			//投稿を追加
@@ -240,9 +244,17 @@ class GoodsController extends Ext_Controller_Action
 				'post_name' => sprintf('ag-%s-%s', $asin, $acode), 
 				'post_type' => 'post', 
 			);
-$this->vd($new_post);
+
 			if ($get->status) { $post_id = wp_insert_post($new_post); }
-$this->vd($post_id);
+
+			// 表示用に情報追加
+			$goods_images = explode(';', $Goods->getImage($asin));
+//			$this->vd($goods_images);
+			$new_post['goods_url'] = $goods_url;
+			$new_post['goods_image'] = $goods_images[0];
+			$new_post['chart_image'] = $img_src;
+			$new_posts[] = $new_post;
+//$this->vd($post_id);
 			//カテゴリーを設定
 			$categioryids = array('amazon_goods', 'monetize');
 			wp_set_object_terms($post_id, $categioryids, 'category');
@@ -254,6 +266,13 @@ $this->vd($post_id);
 
 			$cnt++;
 		}
+
+//$this->vd($new_posts);
+		foreach ($new_posts as $i => $p) {
+			$rows[$i] = (object) $p;
+		}
+
+		echo $this->get_blade()->run("goods-post", compact('rows'));
 	}
 }
 
