@@ -1,0 +1,57 @@
+	#dict_output::after{
+		content:"\A";
+		white-space:pre;
+	}
+
+	#header-in, #menu-menu-1{
+		display: none;
+	}
+
+	#wrap_img {
+#		width: 700px;
+		float: left;
+		margin-right: 40px;
+	}
+
+	#img {
+		width: 800px;
+		height: 350px;
+		object-fit: cover;
+		object-position: right top;
+	}
+
+	#dict_output {
+		margin-left: 10px;
+		padding: 20px;
+		background: black;
+		font-weight: bold;
+		color: white;
+#		height: 100px;
+	}
+
+	#sidebar {
+		margin-left: 10px;
+		padding: 20px;
+		background: black;
+		font-weight: bold;
+		color: white;
+#		height: 100px;
+	}
+
+	.clear {
+		clear: both;
+	}
+
+	#sens_output {
+		font-size: 1px;
+		color: blue;
+	}
+
+	#start {
+		font-size: 30px;
+		#font-family: serif;
+		font-family: "Gill Sans", sans-serif;
+		#font-family: system-ui;
+		font-weight: bold;
+		color: blue;
+	}
