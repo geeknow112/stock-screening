@@ -2,71 +2,10 @@
 	<legend>【コード投稿】</legend>
 	</p>
 
-{{--	@if ($get->action != '')	--}}
-	<div class="row mb-3">
-		<label for="customer" class="col-sm-2 col-form-label w-5">顧客番号</label>
-		<input type="text" class="col-sm-2 col-form-control w-auto" id="customer" name="customer" aria-describedby="customerHelp" value="{{$rows->customer}}" readonly>
+	<div class="row mb-3" style="height: 300px;">
+		<label for="contents_code" class="col-sm-2 col-form-label w-5">コード</label>
+		<textarea type="text" class="col-sm-2 col-form-control w-50"id="contents_code" name="contents_code">{{$post->contents_code}}</textarea>
 	</div>
-{{--	@endif	--}}
-
-	<div class="row mb-3">
-		<label for="customer_name" class="col-sm-2 col-form-label w-5">顧客名</label>
-<!--		<input type="text" class="col-sm-2 col-form-control w-auto" id="customer_name" name="customer_name" aria-describedby="customerNameHelp" value="{{$post->customer_name}}">-->
-		<textarea type="text" class="col-sm-2 col-form-control w-auto" id="customer_name" name="customer_name" aria-describedby="customerNameHelp" value="{{$post->customer_name}}"></textarea>
-<!--		<div id="orderName" class="form-text">顧客名を入力してください。</div>-->
-	</div>
-
-<br />
-<hr>
-	<div class="row mb-3" id="customerTankRow">
-	@if ($rows_tanks)
-		@foreach($rows_tanks as $i => $d)
-				<div>
-				<label class="col-sm-2 col-form-label w-5">配送先 槽（タンク）: {{$d->detail}}</label>
-				<input type="text" class="col-sm-2 col-form-control w-auto" id="tank_{{$i}}" name="tank[]" aria-describedby="tankHelp" value="{{$d->tank}}">&emsp;
-				@if ($i == $rows_tanks_count - 1)
-				<input type="button" class="col-sm-2 col-form-control w-auto" id="add_tank_{{$rows_tanks_count}}" name="add_tank_{{$rows_tanks_count}}" value="追加" onclick="addCustomerTankRow({{$rows_tanks_count}})">
-				@endif
-				</div>
-		@endforeach
-	@else
-		<div>
-			<label class="col-sm-2 col-form-label w-5">配送先 槽（タンク）: 新規登録 </label>
-			<input type="text" class="col-sm-2 col-form-control w-auto" id="tank_0" name="tank[]" aria-describedby="tankHelp" value="">&emsp;
-			<input type="button" class="col-sm-2 col-form-control w-auto" id="add_tank_0" name="add_tank_0" value="追加" onclick="addCustomerTankRow(0)">
-		</div>
-	@endif
-	</div>
-
-<!--
-<br />
-<hr>
-	<div class="row mb-3" id="customerAddrRow">
-	@if ($rows_addrs)
-		@foreach($rows_addrs as $i => $d)
-				<div>
-				<label class="col-sm-2 col-form-label w-5">住所: {{$d->detail}}</label>
-				<input type="text" class="col-sm-2 col-form-control w-auto" id="pref_{{$i}}" name="pref[]" aria-describedby="prefHelp" value="{{$d->pref}}">&emsp;
-				<input type="text" class="col-sm-2 col-form-control w-auto" id="addr1_{{$i}}" name="addr1[]" aria-describedby="addr1Help" value="{{$d->addr1}}">&emsp;
-				<input type="text" class="col-sm-2 col-form-control w-auto" id="addr2_{{$i}}" name="addr2[]" aria-describedby="addr2Help" value="{{$d->addr2}}">&emsp;
-				<input type="text" class="col-sm-2 col-form-control w-auto" id="addr3_{{$i}}" name="addr3[]" aria-describedby="addr3Help" value="{{$d->addr3}}">&emsp;
-				@if ($i == $rows_addrs_count - 1)
-				<input type="button" class="col-sm-2 col-form-control w-auto" id="add{{$rows_addrs_count}}" name="add{{$rows_addrs_count}}" value="追加" onclick="addCustomerAddrRow({{$rows_addrs_count}})">
-				@endif
-				</div>
-		@endforeach
-	@else
-		<div>
-			<label class="col-sm-2 col-form-label w-5">住所: 新規登録 </label>
-			<input type="text" class="col-sm-2 col-form-control w-auto" id="pref_0" name="pref[]" aria-describedby="prefHelp" value="">&emsp;
-			<input type="text" class="col-sm-2 col-form-control w-auto" id="addr1_0" name="addr1[]" aria-describedby="addr1Help" value="">&emsp;
-			<input type="text" class="col-sm-2 col-form-control w-auto" id="addr2_0" name="addr2[]" aria-describedby="addr2Help" value="">&emsp;
-			<input type="text" class="col-sm-2 col-form-control w-auto" id="addr3_0" name="addr3[]" aria-describedby="addr3Help" value="">&emsp;
-			<input type="button" class="col-sm-2 col-form-control w-auto" id="add0" name="add0" value="追加" onclick="addCustomerAddrRow(0)">
-		</div>
-	@endif
-	</div>
--->
 
 <script>
 /**
@@ -77,7 +16,7 @@ window.onload = function() {
 	const action = "{{$get->action}}";
 	if (action == 'confirm') {
 		document.getElementById('customer').readOnly = true;
-		document.getElementById('customer_name').readOnly = true;
+		document.getElementById('contents_code').readOnly = true;
 	}
 }
 
@@ -160,31 +99,3 @@ function delCustomerAddrRow(cnt)
 	e.forEach((element) => element.remove());
 }
 </script>
-
-<br />
-<hr>
-	@if ($goods_list)
-		<div class="row mb-3">
-			<div>
-			<label class="col-sm-2 col-form-label w-5">商品:</label>
-			@foreach($goods_list as $goods => $goods_name)
-				<label>
-				@if (!is_null($cust_goods))
-				<input type="checkbox" class="" id="goods" name="goods_s[]" aria-describedby="prefHelp" value="{{$goods}}" @if (in_array($goods, $cust_goods)) checked @endif>{{$goods_name}}&emsp;
-				@else
-				<input type="checkbox" class="" id="goods" name="goods_s[]" aria-describedby="prefHelp" value="{{$goods}}">{{$goods_name}}&emsp;
-				@endif
-				</label>
-				@if ($loop->index != 0 && $loop->index % 5 == 0)
-					<br />
-					<label class="col-sm-2 col-form-label w-5">&emsp;</label>
-				@endif
-			@endforeach
-			</div>
-		</div>
-	@else
-		<div class="row mb-3">
-			<label class="col-sm-2 col-form-label">商品: </label>
-			商品がありません。
-		</div>
-	@endif
