@@ -1,5 +1,5 @@
 	<p class="">
-	<legend>【顧客登録】</legend>
+	<legend>【コード投稿】</legend>
 	</p>
 
 {{--	@if ($get->action != '')	--}}
