@@ -38,7 +38,9 @@ function push_Keydown(event) {
 	console.log(ids[Q_No]);
 	if (ids[Q_No] === undefined) {
 //		window.location.href = '/webhook-keepa-to-slack/';
-		var section = document.getElementById("section").value;
+		var section = document.getElementById("current_section").value;
+		section = parseInt(section) + 1;
+		console.log('input section : ' + section);
 		window.location.href = '/tools/js-typing/?section=' + section;
 //		location.reload();
 
