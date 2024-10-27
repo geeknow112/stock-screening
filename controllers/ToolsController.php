@@ -169,7 +169,7 @@ $style = file_get_contents($css);
 echo '<style>'. $style. '</style>';
 
 	$html .= '<script type="text/javascript" src="./js/typing.js"></script>';
-	$html .= '<input type="hidden" id="section" value="'. $section. '">';
+	$html .= '<input type="hidden" id="current_section" value="'. $section. '">';
 	$html .= '<div style="height: 350px">';
 	$html .= '	<h4 id="number"></h4>';
 	$html .= '	<div>';
