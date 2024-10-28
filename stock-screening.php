@@ -87,8 +87,8 @@ class StockScreening {
 				break;
 
 			case 'subscriber' :
-				if (in_array($cur_user->user_login, array('student'))) {
-					add_submenu_page('staging', 'コード検索','コード検索', 'read', 'staging-list', array(&$this, 'staging_list'));
+				if (in_array($cur_user->user_login, array('student', 'm.horikoshi'))) {
+//					add_submenu_page('staging', 'コード検索','コード検索', 'read', 'staging-list', array(&$this, 'staging_list'));
 					add_submenu_page('staging', 'コード投稿','コード投稿', 'read', 'staging-detail', array(&$this, 'staging_detail'));
 				} else {
 					$this->remove_menus();
